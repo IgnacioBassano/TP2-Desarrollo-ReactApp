@@ -1,38 +1,125 @@
-.App {
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  padding: 20px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1 {
+  color: #333;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.input, button {
+  padding: 10px;
+  margin: 10px;
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+button {
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button.toggle-password {
+  background-color: #007bff;
+}
+
+button.toggle-password:hover {
+  background-color: #0056b3;
+}
+
+button.generate-password {
+  background-color: #28a745;
+}
+
+button.generate-password:hover {
+  background-color: #218838;
+}
+
+button.copy-password {
+  background-color: #ff9800;
+}
+
+button.copy-password:hover {
+  background-color: #e68900;
+}
+
+button.toggle-advanced-panel {
+  background-color: #9c27b0;
+}
+
+button.toggle-advanced-panel:hover {
+  background-color: #7a1b8c;
+}
+
+.advanced-panel {
+  background-color: #9c27b0; 
+  color: #fff; 
+  padding: 20px;
+  margin-top: 10px; 
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+  display: none; 
+  position: absolute; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  z-index: 1000; 
+}
+
+.advanced-panel .options {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.advanced-panel label {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  color: #fff;
+  text-align: left; 
+  width: 100%; 
+}
+
+.advanced-panel input[type="checkbox"] {
+  margin-right: 5px; 
+}
+
+.advanced-panel input[type="number"] {
+  width: 100px;
+  margin-left: 10px;
+}
+
+.password-strength {
+  font-weight: bold;
+  margin: 10px 0;
   color: white;
+  padding: 10px;
+  border-radius: 5px;
 }
 
-.App-link {
-  color: #61dafb;
+.password-strength.poco-segura {
+  background-color: red;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.password-strength.segura {
+  background-color: yellow;
+  color: black;
+}
+
+.password-strength.muy-segura {
+  background-color: green;
+}
+
+
+p.success-message {
+  color: green;
+}
+
+.hidden {
+  display: none;
 }
