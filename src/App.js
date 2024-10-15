@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
+import PasswordInput from './Components/PasswordInput';
+import PasswordStrength from './Components/PasswordStrength';
+import AdvancedPanel from './Components/AdvancedPanel';
 
 function App() {
   const [password, setPassword] = useState('');
@@ -14,20 +17,27 @@ function App() {
   const [includeSpecialChars, setIncludeSpecialChars] = useState(true);
 
   const evaluatePasswordStrength = (password) => {
-    if (password.length < 8) return 'poco-segura';
+    
+    if (password.length <= 8) return 'poco-segura'; 
+    if (password.length >= 8 && password.length <= 11) return 'segura'; 
+    if (password.length >= 12) {
+     
+      const hasNumbers = /\d/.test(password);
+      const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+      const hasUpperCase = /[A-Z]/.test(password);
+      const hasLowerCase = /[a-z]/.test(password);
 
-    const hasNumbers = /\d/.test(password);
-    const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-
-    if (password.length > 12 && hasNumbers && hasSpecialChars && hasUpperCase && hasLowerCase) {
-      return 'muy-segura';
-    } else if (password.length >= 8 && (hasNumbers || hasSpecialChars || hasUpperCase)) {
-      return 'segura';
-    } else {
-      return 'poco-segura';
+      if (hasNumbers && hasSpecialChars && hasUpperCase && hasLowerCase) {
+        return 'muy-segura';
+      }
+      return 'segura'; 
     }
+    return 'poco-segura'; 
+  };
+
+  const handlePasswordChange = (newPassword) => {
+    setPassword(newPassword);
+    setPasswordStrength(evaluatePasswordStrength(newPassword)); 
   };
 
   const generateRandomPassword = () => {
@@ -49,7 +59,7 @@ function App() {
       randomPassword += availableChars.charAt(Math.floor(Math.random() * availableChars.length));
     }
     setPassword(randomPassword);
-    setPasswordStrength(evaluatePasswordStrength(randomPassword));
+    setPasswordStrength(evaluatePasswordStrength(randomPassword)); 
   };
 
   const copyToClipboard = () => {
@@ -62,110 +72,46 @@ function App() {
   return (
     <div className="container">
       <h1>Fortaleza de Contraseña</h1>
-
-      <input
-        type={isPasswordVisible ? 'text' : 'password'}
-        className="input"
-        value={password}
-        placeholder="Ingrese una contraseña"
-        onChange={(e) => {
-          setPassword(e.target.value);
-          setPasswordStrength(evaluatePasswordStrength(e.target.value));
-        }}
+      <PasswordInput
+        password={password}
+        isPasswordVisible={isPasswordVisible}
+        onPasswordChange={handlePasswordChange}
       />
-
       <div className="buttons">
-        <button
-          className="toggle-password"
-          onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-        >
+        <button className="toggle-password" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
           {isPasswordVisible ? 'Ocultar' : 'Mostrar'} Contraseña
         </button>
-
-        <button
-          className="generate-password"
-          onClick={generateRandomPassword}
-        >
+        <button className="generate-password" onClick={generateRandomPassword}>
           Generar Contraseña Aleatoria
         </button>
-
-        <button
-          className="copy-password"
-          onClick={copyToClipboard}
-        >
+        <button className="copy-password" onClick={copyToClipboard}>
           Copiar Contraseña
         </button>
       </div>
 
-      {showCopiedMessage && (
-        <p className="success-message">¡Contraseña copiada al portapapeles!</p>
-      )}
+      {showCopiedMessage && <p className="success-message">¡Contraseña copiada al portapapeles!</p>}
+      <PasswordStrength strength={passwordStrength} />
 
-      <p className={`password-strength ${passwordStrength}`}>
-        {passwordStrength === 'poco-segura' ? 'Poco segura' : 
-         passwordStrength === 'segura' ? 'Segura' : 
-         'Muy segura'}
-      </p>
-
-      <button
-        className="toggle-advanced-panel"
-        onClick={() => setShowAdvancedPanel(!showAdvancedPanel)}
-      >
+      <button className="toggle-advanced-panel" onClick={() => setShowAdvancedPanel(!showAdvancedPanel)}>
         {showAdvancedPanel ? 'Ocultar' : 'Mostrar'} Panel Avanzado
       </button>
 
-      <div
-        className="advanced-panel"
-        style={{ display: showAdvancedPanel ? 'block' : 'none' }}
-      >
-        <div className="options">
-          <label>
-            Largo de la contraseña:
-            <input
-              type="number"
-              value={passwordLength}
-              onChange={(e) => setPasswordLength(parseInt(e.target.value, 10))}
-              min="8"
-              max="20"
-            />
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={includeUppercase}
-              onChange={(e) => setIncludeUppercase(e.target.checked)}
-            />
-            Incluir letras mayúsculas
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={includeLowercase}
-              onChange={(e) => setIncludeLowercase(e.target.checked)}
-            />
-            Incluir letras minúsculas
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={includeNumbers}
-              onChange={(e) => setIncludeNumbers(e.target.checked)}
-            />
-            Incluir números
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={includeSpecialChars}
-              onChange={(e) => setIncludeSpecialChars(e.target.checked)}
-            />
-            Incluir caracteres especiales
-          </label>
-        </div>
-      </div>
+      {showAdvancedPanel && (
+        <AdvancedPanel
+          passwordLength={passwordLength}
+          includeUppercase={includeUppercase}
+          includeLowercase={includeLowercase}
+          includeNumbers={includeNumbers}
+          includeSpecialChars={includeSpecialChars}
+          onPasswordLengthChange={setPasswordLength}
+          onIncludeUppercaseChange={setIncludeUppercase}
+          onIncludeLowercaseChange={setIncludeLowercase}
+          onIncludeNumbersChange={setIncludeNumbers}
+          onIncludeSpecialCharsChange={setIncludeSpecialChars}
+        />
+      )}
     </div>
   );
 }
 
 export default App;
-

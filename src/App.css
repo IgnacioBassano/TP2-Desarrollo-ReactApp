@@ -58,68 +58,27 @@ button.toggle-advanced-panel:hover {
 .advanced-panel {
   background-color: #9c27b0; 
   color: #fff; 
-  padding: 20px;
-  margin-top: 10px; 
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  text-align: center;
-  display: none; 
-  position: absolute; 
-  left: 50%; 
-  transform: translateX(-50%); 
-  z-index: 1000; 
-}
-
-.advanced-panel .options {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.advanced-panel label {
-  display: flex;
-  align-items: center;
-  margin: 10px 0;
-  color: #fff;
-  text-align: left; 
-  width: 100%; 
-}
-
-.advanced-panel input[type="checkbox"] {
-  margin-right: 5px; 
-}
-
-.advanced-panel input[type="number"] {
-  width: 100px;
-  margin-left: 10px;
+  padding: 20px; 
+  border-radius: 5px; 
+  margin-top: 20px;
 }
 
 .password-strength {
-  font-weight: bold;
   margin: 10px 0;
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
 }
 
 .password-strength.poco-segura {
-  background-color: red;
+  color: red;
 }
 
 .password-strength.segura {
-  background-color: yellow;
-  color: black;
+  color: orange;
 }
 
 .password-strength.muy-segura {
-  background-color: green;
-}
-
-
-p.success-message {
   color: green;
 }
 
-.hidden {
-  display: none;
+.success-message {
+  color: green;
 }
